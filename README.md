@@ -2,7 +2,7 @@
 
 An automated agent that sends daily USD/ILS exchange rates and BTC/USD prices to your Slack channel every business day when the market is open.
 
-## Features
+## Features  
 
 ✅ **Automated Daily Updates** - Sends messages at market open (9:30 AM ET)  
 ✅ **Market Hours Aware** - Only sends during US market open hours (9:30 AM - 4:00 PM ET)  
