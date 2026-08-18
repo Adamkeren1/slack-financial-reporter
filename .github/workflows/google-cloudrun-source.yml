@@ -40,7 +40,7 @@ env:
   REGION: us-east1
   SERVICE: slack-financial-reporter
   WORKLOAD_IDENTITY_PROVIDER: 'projects/345012852320/locations/global/workloadIdentityPools/github-action-cloud-run/providers/github'
-  SERVICE_ACCOUNT: '345012852320-compute@developer.gserviceaccount.com'
+  SERVICE_ACCOUNT: 'github-actions@slack-financial-reporter.iam.gserviceaccount.com'
 
 jobs:
   deploy:
