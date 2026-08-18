@@ -39,7 +39,7 @@ env:
   PROJECT_NUMBER: '345012852320'
   REGION: us-east1
   SERVICE: slack-financial-reporter
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/345012852320/locations/global/workloadIdentityPools/github-action-cloud-run/providers/github'
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/345012852320/locations/global/workloadIdentityPools/github-action-cloud-run/providers/github-provider'
   SERVICE_ACCOUNT: 'github-actions@slack-financial-reporter.iam.gserviceaccount.com'
 
 jobs:
