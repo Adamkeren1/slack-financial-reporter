@@ -1,0 +1,48 @@
+name: Deploy to Cloud Run from Source
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: slack-financial-reporter
+  PROJECT_NUMBER: "345012852320"
+  REGION: us-east1
+  SERVICE: slack-financial-reporter
+  WORKLOAD_IDENTITY_PROVIDER: "projects/345012852320/locations/global/workloadIdentityPools/github-action-cloud-run/providers/github"
+  SERVICE_ACCOUNT: "github-actions@slack-financial-reporter.iam.gserviceaccount.com"
+  BUILD_SERVICE_ACCOUNT: "cloud-run-builder@slack-financial-reporter.iam.gserviceaccount.com"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT }}
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          source: ./
+          service_account: ${{ env.SERVICE_ACCOUNT }}
+          build_service_account: ${{ env.BUILD_SERVICE_ACCOUNT }}
+
+      - name: Show output
+        run: echo "${{ steps.deploy.outputs.url }}"
