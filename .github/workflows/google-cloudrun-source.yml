@@ -70,6 +70,7 @@ jobs:
           region: ${{ env.REGION }}
           source: ./
           service_account: ${{ env.SERVICE_ACCOUNT }}
+          build_service_account: ${{ env.SERVICE_ACCOUNT }}
 
       - name: Show output
         run: echo "${{ steps.deploy.outputs.url }}"
