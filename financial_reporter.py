@@ -34,10 +34,22 @@ def send_daily_market_update():
         logger.error("Failed to connect to Slack")
         return False
 
+    # Fetch financial data
+    logger.info("Fetching financial data...")
+    rates = FinancialAPI.get_all_rates()
+
     # Check if market is open
     if not MarketUtils.is_market_open():
         logger.info("Market is not open. Sending status message to Slack.")
-        closed_message = "INFO: Market is not open. Skipping scheduled market update."
+        
+        # Build closed message with latest known rates
+        if rates:
+            usd_ils = rates.get("usd_ils")
+            btc_usd = rates.get("btc_usd")
+            closed_message = f"INFO: Market is not open. Last known rate is USD/ILS: {usd_ils}, BTC/USD: {btc_usd}."
+        else:
+            closed_message = "INFO: Market is not open. Unable to fetch latest rates."
+        
         sent = slack.send_message(closed_message)
         if sent:
             logger.info("Closed-market notification sent successfully.")
@@ -45,10 +57,6 @@ def send_daily_market_update():
         else:
             logger.error("Failed to send closed-market notification to Slack")
             return False
-
-    # Fetch financial data
-    logger.info("Fetching financial data...")
-    rates = FinancialAPI.get_all_rates()
 
     if not rates:
         logger.error("Failed to fetch financial data")
