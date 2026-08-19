@@ -39,5 +39,5 @@ jobs:
             --project=${{ env.PROJECT_ID }} \
             --region=${{ env.REGION }} \
             --source=. \
-            --service-account=${{ env.SERVICE_ACCOUNT }} \
+            --service-account=${{ env.SERVICE_ACCOUNT_EMAIL }} \
             --build-service-account=${{ env.BUILD_SERVICE_ACCOUNT }}
