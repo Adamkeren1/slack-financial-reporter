@@ -10,12 +10,15 @@ env:
   PROJECT_NUMBER: "345012852320"
   REGION: us-east1
   SERVICE: slack-financial-reporter
-  SERVICE_ACCOUNT: "github-actions@slack-financial-reporter.iam.gserviceaccount.com"
-  BUILD_SERVICE_ACCOUNT: "cloud-run-builder@slack-financial-reporter.iam.gserviceaccount.com"
+  WORKLOAD_IDENTITY_PROVIDER: "projects/345012852320/locations/global/workloadIdentityPools/github-action-cloud-run/providers/github"
+  SERVICE_ACCOUNT_EMAIL: "github-actions@slack-financial-reporter.iam.gserviceaccount.com"
+  SERVICE_ACCOUNT: "projects/slack-financial-reporter/serviceAccounts/github-actions@slack-financial-reporter.iam.gserviceaccount.com"
+  BUILD_SERVICE_ACCOUNT: "projects/slack-financial-reporter/serviceAccounts/cloud-run-builder@slack-financial-reporter.iam.gserviceaccount.com"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       id-token: write
@@ -27,8 +30,8 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: "projects/345012852320/locations/global/workloadIdentityPools/github-action-cloud-run/providers/github"
-          service_account: ${{ env.SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.SERVICE_ACCOUNT_EMAIL }}
 
       - name: Deploy to Cloud Run
         run: |
